@@ -14,10 +14,10 @@ y = altura / 2 - 50
 velocidade = 10 # movimento do carro (em pixel)
 
 # Coordenadas para os carros inimigos
-posY_inimigo_1 = 1000; posX_inimigo_1 = 510		# Azul
-posY_inimigo_2 = 1100; posX_inimigo_2 = 690		# Branco
-posY_inimigo_3 = 1200; posX_inimigo_3 = 870		# Vermelho
-posY_inimigo_4 = 1300; posX_inimigo_4 = 1030	# Azure
+posX_inimigo_1 = 510;  posY_inimigo_1 = 1000	# Azul
+posX_inimigo_2 = 690;  posY_inimigo_2 = 1100	# Branco
+posX_inimigo_3 = 870;  posY_inimigo_3 = 1200	# Vermelho
+posX_inimigo_4 = 1030; posY_inimigo_4 = 1300	# Azure
 velocidade_inimigos = 5 # velocidade dos demais carros
 
 # Imagens do jogo
@@ -27,6 +27,7 @@ inimigo_1 = pygame.image.load ('inimigo_1.png')
 inimigo_2 = pygame.image.load ('inimigo_2.png')
 inimigo_3 = pygame.image.load ('inimigo_3.png')
 inimigo_4 = pygame.image.load ('inimigo_4.png')
+gameOver = pygame.image.load ('GameOver.jpg')
 
 # Nome do jogo
 pygame.display.set_caption ("Fórmula 1 - 2022") 
@@ -42,21 +43,20 @@ texto = fonte.render ("Pontos: ", True, (255,255,255), (0,0,0))
 pos_texto = texto.get_rect ()
 pos_texto.center = (65,50)
 
-# Pontuação
+# Pontuação e outros dados de jogo
 pontos = 0
+game_over = 0
 
 # O jogo
 janela_aberta = True
 while janela_aberta :	# Enquanto a janela for true
-    
-    # Atualizar a tela
-    pygame.time.delay (50)
+    pygame.time.delay (50)	# Atualizar a tela após 50 milisegundos
     
     # Fechar a janela
-    for event in pygame.event.get () :  # Cai neste laço quando disparado algum evento
+    for event in pygame.event.get () :  # Fecha o jogo no botão X da janela
         if event.type == pygame.QUIT :
             janela_aberta = False
-        
+    
     # Comandos de movimento e colisão nas laterais da pista
     comandos = pygame.key.get_pressed()
     if comandos[pygame.K_RIGHT] and (x <= 1100):
@@ -67,19 +67,23 @@ while janela_aberta :	# Enquanto a janela for true
     # A Colisão entre os carros
     # Carro 1
     if ((x - 130 < posX_inimigo_1) and ((y + 130 >= posY_inimigo_1) and (y - 70 <= posY_inimigo_1))) :
-        y = 1200
+        game_over = 1
+        janela_aberta = False
     
     # Carro 2
     if ((x + 140 > posX_inimigo_2) and (x - 140 < posX_inimigo_2) and ((y + 130 >= posY_inimigo_2) and (y - 70 <= posY_inimigo_2))) :
-        y = 1200
+        game_over = 1
+        janela_aberta = False
     
     # Carro 3
     if ((x + 145 > posX_inimigo_3) and (x - 145 < posX_inimigo_3) and ((y + 130 >= posY_inimigo_3) and (y - 70 <= posY_inimigo_3))) :
-        y = 1200
+        game_over = 1
+        janela_aberta = False
     
     # Carro 4
     if ((x + 140 > posX_inimigo_4) and ((y + 130 >= posY_inimigo_4) and (y - 70 <= posY_inimigo_4))) :
-        y = 1200
+        game_over = 1
+        janela_aberta = False
         
     # Movimento dos carros inimigos e reposicionamento aleatório
     if (posY_inimigo_1 <= -200) :
@@ -117,4 +121,12 @@ while janela_aberta :	# Enquanto a janela for true
     
     pygame.display.update () # Atualiza a tela
 
-pygame.quit ()
+# Fim do jogo - Tela de GameOver e fecha o jogo
+if (game_over == 1) :
+	janela.blit (gameOver, (0, 0))						#Desenha a tela de gameOver
+	pos_texto.center = (largura / 2, altura / 2 + 100)	#Posiciona o texto de pontos
+	janela.blit (texto, pos_texto)						#Exibe os pontos após o gameOver
+	pygame.display.update ()							#Atualiza a tela (exibir a imagem)
+	pygame.time.delay (5000)							#Tempo de espera para fechar a janela automaticamente
+
+pygame.quit () # Fecha a janela
