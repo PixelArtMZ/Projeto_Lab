@@ -1,7 +1,46 @@
 import pygame
+import pytest
 pygame.init()
 
 from random import randint # Importa o método para gerar números aleatórios
+
+def posicao_inimigo (V1, V2) :
+    return randint (V1, V2)
+
+#função para fazer teste de caixa preta
+def test_posicao_inimigo (): # realiza teste de caixa preta em todos os inimigos 
+    assert posicao_inimigo (0, 100) <= 100
+    assert posicao_inimigo (0, 100) >= 0
+
+def test_tela_titulo (): # realiza teste de caixa preta na tela de titulo
+   assert telaTitulo == True
+
+def test_fase_1 (): # realiza teste de caixa preta na fase 1
+   assert fase == 1
+
+def test_fase_2 (): # realiza teste de caixa preta na fase 2
+    assert fase == 2
+
+def testa_tecla_extra (): # realiza teste de caixa preta na tecla extra
+    assert tecla_extra == True
+
+#função suite de teste de caixa branca
+def test_suite_posicao_inimigo (): # realiza teste de caixa preta em todos os inimigos
+    assert posicao_inimigo (0, 100) == 100
+    assert posicao_inimigo (0, 100) == 0
+
+#cria uma função para testar outras partes do codigo com o pytest
+def test_suite_tela_titulo (): # realiza teste de caixa branca na tela de titulo
+    assert telaTitulo == False
+
+def test_suite_fase_1 (): # realiza teste de caixa branca na fase 1
+    assert fase == 0
+
+def test_suite_fase_2 (): # realiza teste de caixa branca na fase 2
+    assert fase == 3
+
+def test_suite_tecla_extra (): # realiza teste de caixa branca na tecla extra
+    assert tecla_extra == False
 
 # Definir a janela
 largura = 1380
@@ -64,6 +103,8 @@ pygame.mixer.music.play (-1)
 # Efeitos Sonoros
 som_cursor = pygame.mixer.Sound ('Cursor_02.mp3')
 som_selecione = pygame.mixer.Sound ('Select_Sound.mp3')
+som_new_fase = pygame.mixer.Sound ('TOASTY.mp3')
+som_caminhao = pygame.mixer.Sound ('caminhao.mp3')
 
 # ──────────────────────────────────────────────────────────────────────────────────────
 
@@ -176,8 +217,6 @@ while telaTitulo :	# Enquanto a janela for true
 # Ao clicar em sair, encerrará todo o progresso aqui
 if (sair == 1) :
     pygame.quit () # Fecha a janela
-som_new_fase = pygame.mixer.Sound ('TOASTY.mp3')
-som_caminhao = pygame.mixer.Sound ('caminhao.mp3')
 
 # ──────────────────────────────────────────────────────────────────────────────────────
 
@@ -201,6 +240,26 @@ tecla_extra = 0 # Tecla Z para mudança de fase
 ativar_fase = 0	# O Caminhão logo dará a partida!!!!
 
 # ──────────────────────────────────────────────────────────────────────────────────────
+
+# Removendo variáveis que não serão mais utilizadas
+#Imagens Tela de Título
+del fundo_telaTitulo
+del nome_jogo
+del jogar
+del como_jogar
+del sair_do_jogo
+del cursor
+del teclaX
+del cx_text_1
+del info
+del cx_text_2
+
+# Controles Tela de Título
+del setaX; setaY
+del mover_seta
+del opcoes
+del controle_move
+del move_tecleX
 
 # ──────────────────────────────────────────────────────────────────────────────────────
 
@@ -246,30 +305,30 @@ while gamePlay :	# Enquanto a janela for true
     if ( (x - 130 < posX_inimigo_5) and ((y + 133 >= posY_inimigo_5) and (y - 485 <= posY_inimigo_5))) :
         game_over = 1
         gamePlay = False
-		
+
     # Movimento dos carros inimigos e reposicionamento aleatório
     if (posY_inimigo_1 <= -200) :
-        posY_inimigo_1 = randint (800, 1500)
+        posY_inimigo_1 = posicao_inimigo (800, 1500)
         pontos += 2
-            
+
     if (posY_inimigo_2 <= -200) :
-        posY_inimigo_2 = randint (800, 1700)
+        posY_inimigo_2 = posicao_inimigo (800, 1700)
         pontos += 5
     
     if (posY_inimigo_3 <= -200) :
-        posY_inimigo_3 = randint (800, 2000)
+        posY_inimigo_3 = posicao_inimigo (800, 2000)
         pontos += 3
     
     if (posY_inimigo_4 <= -200) :
-        posY_inimigo_4 = randint (700, 1400)
+        posY_inimigo_4 = posicao_inimigo (700, 1400)
         pontos += 3
     
     if (posY_inimigo_5 <= -600) :
-        posY_inimigo_5 = randint (700, 1400)
+        posY_inimigo_5 = posicao_inimigo (700, 1400)
         pontos += 5
     
-    texto = fonte.render ("Pontos: "+ str(pontos), True, (255,255,255), (0,0,0)) # Atualizar a pontuação
-    txt_fase = fonte.render ("Fase: "+ str(fase), True, (255,255,255), (0,0,0)) # Atualizar a pontuação
+    texto = fonte.render ("Pontos: "+ str(pontos), True, (255,255,255), (0,0,0))	# Atualizar a pontuação
+    txt_fase = fonte.render ("Fase: "+ str(fase), True, (255,255,255), (0,0,0))		# Atualizar a pontuação
     
     # Atualizar a posição dos carros || Aumenta a velocidade a cada Fase
     posY_inimigo_1 -= velocidade_inimigos + vel_run
@@ -312,21 +371,21 @@ while gamePlay :	# Enquanto a janela for true
     janela.blit (caminhao_1, (posX_inimigo_5, posY_inimigo_5))
     fog_sun.set_alpha(100)
     janela.blit (fog_sun, (0, 0))
-    janela.blit (texto, pos_texto) # Exibe a janela de pontos
-    janela.blit (txt_fase, pos_txt_fase) # Exibe a janela de pontos
+    janela.blit (texto, pos_texto) 			# Exibe a janela de pontos
+    janela.blit (txt_fase, pos_txt_fase)	# Exibe a janela de pontos
     
-    pygame.display.update () # Atualiza a tela
+    pygame.display.update () 				# Atualiza a tela
 	
 # ──────────────────────────────────────────────────────────────────────────────────────
 
 # Fim do jogo - Tela de GameOver e fecha o jogo
 if (game_over == 1) :
-	janela.blit (gameOver, (0, 0))						#Desenha a tela de gameOver
-	pos_texto.center = (largura / 2, altura / 2 + 100)	#Posiciona o texto de pontos
-	janela.blit (texto, pos_texto)						#Exibe os pontos após o gameOver
+	janela.blit (gameOver, (0, 0))							#Desenha a tela de gameOver
+	pos_texto.center = (largura / 2, altura / 2 + 100)		#Posiciona o texto de pontos
+	janela.blit (texto, pos_texto)							#Exibe os pontos após o gameOver
 	pos_txt_fase.center = (largura / 2, altura / 2 + 150)	#Posiciona o texto de pontos
-	janela.blit (txt_fase, pos_txt_fase)						#Exibe os pontos após o gameOver
-	pygame.display.update ()							#Atualiza a tela (exibir a imagem)
-	pygame.time.delay (1000)							#Tempo de espera para fechar a janela automaticamente
+	janela.blit (txt_fase, pos_txt_fase)					#Exibe os pontos após o gameOver
+	pygame.display.update ()								#Atualiza a tela (exibir a imagem)
+	pygame.time.delay (1000)								#Tempo de espera para fechar a janela automaticamente
 
 pygame.quit () # Fecha a janela
