@@ -14,6 +14,7 @@ Melhorias no código:
 				PY → Posição Y dos carros
 
 2º Melhoria:
+
 	• Otimização:
 		• Quando se inicia o jogo, um conjunto de variáveis que são utilizadas tão somente na Tela de Título são, então, deletadas, 
 		e, com isso, não ficam na memória (já que essas variáveis não são mais utilizadas deste ponto do código.
