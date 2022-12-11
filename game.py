@@ -21,7 +21,7 @@ def test_fase_1 (): # realiza teste de caixa preta na fase 1
 def test_fase_2 (): # realiza teste de caixa preta na fase 2
     assert fase == 2
 
-def testa_tecla_extra (): # realiza teste de caixa preta na tecla extra
+def test_tecla_extra (): # realiza teste de caixa preta na tecla extra
     assert tecla_extra == True
 
 #função suite de teste de caixa branca
