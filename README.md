@@ -25,12 +25,12 @@ Foram realizados os seguites testes
 1º Teste de caixa preta:
 
 	• Foram criadas funções do tipo test_ utilizando o assert do pytest
-		• As funções criadas tem como objetivo testar a posição dos inimigos, a tela de títalo, as fases do game aleḿ do botão especial para passar 			 para próxima fase do game, totalizando 5 testes feitos, onde nenhum erro foi encontrado durante a realização dos testes.
+		• As funções criadas tem como objetivo testar a posição dos inimigos, a tela de títalo, as fases do game alḿ do botão especial para passar 			 para próxima fase do game, totalizando 5 testes feitos, onde nenhum erro foi encontrado durante a realização dos testes.
 
 2º Teste de Caixa branca:
 	
 	• Foram criadas funções do tipo test_suite utilizando o assert do pytest
-		• As funções criadas tem como objetivo testar a posição dos inimigos, a tela de títalo, as fases do game aleḿ do botão especial para passar 			 para próxima fase do game, totalizando 5 testes feitos, onde nenhum erro foi encontrado durante a realização dos testes.
+		• As funções criadas tem como objetivo testar a posição dos inimigos, a tela de títalo, as fases do game aléḿ do botão especial para passar 			 para próxima fase do game, totalizando 5 testes feitos, onde nenhum erro foi encontrado durante a realização dos testes.
 
 
 Os testes foram realizados em momentos diferentes no código do game a fim de corrigir erros e fazer testes de funcionalidades buscando a melhoria do código e correção de bugs encontrados:
